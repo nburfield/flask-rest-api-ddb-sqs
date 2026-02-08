@@ -1,0 +1,117 @@
+[
+  {
+    "name": "name",
+    "default": null,
+    "type": "str",
+    "null": false,
+    "post_value": true,
+    "patch_value": false,
+    "drop_from_response": false,
+    "index": true,
+    "unique": true
+  },
+  {
+    "name": "email",
+    "default": null,
+    "type": "str",
+    "null": false,
+    "post_value": true,
+    "patch_value": true,
+    "drop_from_response": false,
+    "index": true,
+    "unique": true
+  },
+  {
+    "name": "phone",
+    "default": null,
+    "type": "str",
+    "null": true,
+    "post_value": true,
+    "patch_value": true,
+    "drop_from_response": false
+  },
+  {
+    "name": "status",
+    "default": "active",
+    "type": "str",
+    "null": true,
+    "post_value": true,
+    "patch_value": true,
+    "drop_from_response": false,
+    "index": true,
+    "allowed_values": ["active", "processing", "archived"],
+    "update_roles": ["sec:globaladmin", "sec:service"]
+  },
+  {
+    "name": "created_user",
+    "default": null,
+    "type": "str",
+    "null": false,
+    "post_value": false,
+    "patch_value": false,
+    "drop_from_response": false
+  },
+  {
+    "name": "created_dt",
+    "default": "dt_now",
+    "type": "float",
+    "null": false,
+    "post_value": false,
+    "patch_value": false,
+    "drop_from_response": false
+  },
+  {
+    "name": "updated_user",
+    "default": null,
+    "type": "str",
+    "null": false,
+    "post_value": false,
+    "patch_value": false,
+    "drop_from_response": false
+  },
+  {
+    "name": "updated_dt",
+    "default": "dt_now",
+    "type": "float",
+    "null": false,
+    "post_value": false,
+    "patch_value": false,
+    "drop_from_response": false
+  },
+  {
+    "name": "version",
+    "default": 0,
+    "type": "int",
+    "null": false,
+    "post_value": false,
+    "patch_value": false,
+    "drop_from_response": false
+  },
+  {
+    "name": "_id",
+    "default": null,
+    "type": "str",
+    "null": true,
+    "post_value": false,
+    "patch_value": false,
+    "drop_from_response": true
+  },
+  {
+    "name": "key",
+    "default": null,
+    "type": "str",
+    "null": false,
+    "post_value": false,
+    "patch_value": false,
+    "drop_from_response": false
+  },
+  {
+    "name": "object_type",
+    "default": "foobar",
+    "type": "str",
+    "null": false,
+    "post_value": false,
+    "patch_value": false,
+    "drop_from_response": false
+  }
+]

@@ -29,3 +29,29 @@ All objects need these apart of them.
 - unique: A boolean if the database used should restrict this key/value to unique.
 - allowed_values: A list of allowed values that this key/value can be.
 - update_roles: A list of strings that reference an authenticated role. If this list is present only these set roles can set/update this key/value.
+
+# Tests
+When building tests there will be a dynamodb, sqs, and minio instance available. All other external URL calls made need to be simulated in the pytest environment.
+
+## Start
+Before running anything in the Tests section make sure to enable the virtual environment and source the envs.
+```bash
+source test-venv/bin/activate
+source tests/envs.sh
+```
+
+## Pytest
+The ENV file for this is in the `tests` directory. Build all pytests in the `tests` directory.
+```bash
+# Run test
+pytest
+
+# generate coverage report
+coverage report --format=markdown
+```
+
+## Pylint
+Run the pylint script, capture the JSON output.
+```bash
+./run-pylint.sh
+```

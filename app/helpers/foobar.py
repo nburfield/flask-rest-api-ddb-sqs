@@ -34,8 +34,11 @@ class FoobarHelper(BaseHelper):
         # Store old status for comparison
         old_status = current_foobar.get('status')
 
+        # Filter fields based on role permissions
+        filtered_data = self._filter_fields_by_role(data)
+
         # Perform the update
-        result = super().update(key, data, user, mode=mode)
+        result = super().update(key, filtered_data, user, mode=mode)
 
         if data.get('status') == 'active' and old_status != 'active':
             self.publish_foobar_request(current_campaign)

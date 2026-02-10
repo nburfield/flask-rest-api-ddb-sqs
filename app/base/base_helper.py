@@ -19,6 +19,65 @@ class BaseHelper:
     def __init__(self, model_class):
         self.model = model_class()
 
+    def _get_user_roles(self):
+        """Extract user roles from JWT claimset"""
+        if not hasattr(g, 'claimset') or not g.claimset:
+            return []
+        return g.claimset.get('roles', [])
+
+    def _filter_fields_by_role(self, data):
+        """
+        Filter update data based on user role permissions defined in the schema.
+
+        For each field in the update data:
+        - If the field has 'update_roles' defined in the schema, check if the user
+          has one of those roles. If not, filter out the field.
+        - If the field does not have 'update_roles' defined, allow it (no restrictions).
+        - Always allow 'version' field for optimistic locking.
+
+        Args:
+            data: The update data dictionary
+
+        Returns:
+            Filtered data dictionary with only allowed fields
+        """
+        user_roles = self._get_user_roles()
+        filtered_data = {}
+        removed_fields = []
+
+        for field_name, value in data.items():
+            # Always allow version field for optimistic locking
+            if field_name == 'version':
+                filtered_data[field_name] = value
+                continue
+
+            # Check if field exists in schema
+            if field_name not in self.model.schema_by_name:
+                # Field not in schema, remove it
+                continue
+
+            field_config = self.model.schema_by_name[field_name]
+            update_roles = field_config.get('update_roles')
+
+            # If update_roles is not defined, there are no restrictions
+            if update_roles is None:
+                filtered_data[field_name] = value
+                continue
+
+            # Check if user has one of the required roles
+            if any(role in user_roles for role in update_roles):
+                filtered_data[field_name] = value
+            else:
+                removed_fields.append(field_name)
+
+        if removed_fields:
+            current_app.logger.info(
+                f"User with roles {user_roles} attempted to update restricted fields: {removed_fields}. "
+                f"These fields were filtered out."
+            )
+
+        return filtered_data
+
     def get_all(self, query_params=None):
         """
         Get all items with optional filtering and pagination
